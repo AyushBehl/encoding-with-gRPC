@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+message UnaryDataRequest {
+    string unaryToUnary = 1;
+}
+
+message UnaryToStreamDataRequest {
+    repeated string unaryToStream = 1;
+}
+
+message ResponseString {
+    string encoded = 1;
+}
+
+message EncodedUnaryToStreamResponse {
+    repeated string encodedUnaryToStream = 1;
+}
+
+message UnaryReply {
+    repeated UnaryDataRequest request = 2;
+}
+
+service GrpcTestService {
+    rpc GrpcTestFunction (UnaryDataRequest) returns (ResponseString);
+    rpc UnaryToStreamFunction (UnaryToStreamDataRequest) returns (stream EncodedUnaryToStreamResponse);
+    rpc StreamToUnaryFunction (stream UnaryDataRequest) returns (UnaryReply);
+    rpc StreamToStreamFunction (stream UnaryDataRequest) returns (stream ResponseString);
+}
